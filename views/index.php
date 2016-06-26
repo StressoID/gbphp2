@@ -1,4 +1,3 @@
-<?require_once 'header.php';?>
 <div class="row">
     <?while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {?>
         <div class="col-md-12 rowBlog">
@@ -7,4 +6,3 @@
         </div>
     <?}?>
 </div>
-<?require_once 'footer.php';?>

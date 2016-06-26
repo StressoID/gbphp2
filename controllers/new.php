@@ -5,4 +5,12 @@ if (isset($_POST['submitAdd'])) {
 }
 $title = 'Добавление новой статьи';
 
-require_once '../views/new.php';?>
+// Внутренний шаблон.
+$content = view_include('new.php');
+
+// Внешний шаблон.
+$page = view_include(
+    'main.php',
+    array('title' => $title, 'content' => $content));
+
+echo $page;
