@@ -11,5 +11,15 @@ if (isset($_GET['id'])) {
     }
 }
 $title = 'Редактирование статьи';
+ob_start();
+// Внутренний шаблон.
+$content = view_include('edit.php', ['article' => $article]);
 
-require_once '../views/edit.php';
+// Внешний шаблон.
+$page = view_include(
+    'main.php',
+    array('title' => $title, 'content' => $content));
+
+ob_end_flush();
+
+echo $page;

@@ -9,5 +9,14 @@ if (isset($_GET['id'])) {
 }
 $title = 'Детальная страница статьи';
 
-require_once '../views/article.php';
-?>
+ob_start();
+// Внутренний шаблон.
+$content = view_include('article.php', ['article' => $article]);
+
+// Внешний шаблон.
+$page = view_include(
+    'main.php',
+    array('title' => $title, 'content' => $content));
+ob_end_flush();
+
+echo $page;
