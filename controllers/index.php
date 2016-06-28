@@ -4,6 +4,7 @@ $result = getAllFromTable('blog');
 
 $title = 'Главная';
 
+ob_start();
 // Внутренний шаблон.
 $content = view_include('index.php', ['result' => $result]);
 
@@ -11,5 +12,6 @@ $content = view_include('index.php', ['result' => $result]);
 $page = view_include(
     'main.php',
     array('title' => $title, 'content' => $content));
+ob_end_flush();
 
 echo $page;

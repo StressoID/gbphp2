@@ -11,7 +11,7 @@ if (isset($_GET['id'])) {
     }
 }
 $title = 'Редактирование статьи';
-
+ob_start();
 // Внутренний шаблон.
 $content = view_include('edit.php', ['article' => $article]);
 
@@ -19,5 +19,7 @@ $content = view_include('edit.php', ['article' => $article]);
 $page = view_include(
     'main.php',
     array('title' => $title, 'content' => $content));
+
+ob_end_flush();
 
 echo $page;
