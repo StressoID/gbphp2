@@ -29,9 +29,9 @@
     <div class="container">
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="index.php">Главная</a></li>
-                <li><a href="editor.php">Консоль администратора</a></li>
-                <li><a href="new.php">Добавить статью</a></li>
+                <li><a href="/">Главная</a></li>
+                <li><a href="?act=editor">Консоль администратора</a></li>
+                <li><a href="?act=new">Добавить статью</a></li>
                 </li>
             </ul>
         </div><!--/.nav-collapse -->
@@ -40,3 +40,20 @@
 
 <div class="container theme-showcase" role="main">
     <h1><?=$title?></h1>
+
+    <?=$content?>
+    
+</div> <!-- /container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../app/bootstrap/assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="../app/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../app/bootstrap/docs/assets/js/docs.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../app/bootstrap/docs/assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>

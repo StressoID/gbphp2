@@ -1,6 +1,6 @@
-<?require_once 'header.php';?>
+
 <div class="col-md-12">
-    <form action="edit.php?id=<?=$article['id']?>" id="editArticle" method="POST" class="form-horizontal">
+    <form action="?act=edit&id=<?=$article['id']?>" id="editArticle" method="POST" class="form-horizontal">
         <div class="form-group">
             <label for="name">Название</label>
             <input type="text" class="form-control" name="name" value="<?=trim($article['name'])?>">
@@ -12,4 +12,3 @@
         <input name="submitArticle" class="btn btn-default" type="submit" value="Обновить">
     </form>
 </div>
-<?require_once 'footer.php'?>
