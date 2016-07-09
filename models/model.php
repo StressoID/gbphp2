@@ -1,25 +1,30 @@
 <?php
 
-class Model {
+class Model extends PDO {
 
-    public function __construct()
-    {
-        $dbconn = pg_connect("host=localhost dbname=gbphp user=postgres password=postgres")
-        or die('Could not connect: ' . pg_last_error());
+    private static $instance;
+
+    public static function getInstance() {
+        if (self::$instance == null)
+            self::$instance = new Model("pgsql:host=localhost;dbname=gbphp;", 'postgres', 'postgres');
+
+        return self::$instance;
     }
 
     public function getAllFromTable($tableName) {
-        $query = 'SELECT blog.id, blog.name, blog.text FROM '.$tableName;
-        $result = pg_query($query) or die('Ошибка запроса: ' . pg_last_error());
-        return $result;
+        return self::$instance->query('SELECT * FROM '.$tableName);
+    }
+
+    public function getAllFromTableByFID($tableName, $id) {
+        $filter = key($id).' in ('.implode(',',$id).')';
+        return self::$instance->query('SELECT * FROM '.$tableName.' where '.$filter);
     }
 
     public function getOneRow($id) {
-        $id = pg_escape_string($id);
-        $sql = "select blog.id, blog.name, blog.text from blog where id=$id";
-        $result = pg_query($sql) or die('Ошибка запроса: ' . pg_last_error());
-        return pg_fetch_array($result, NULL, PGSQL_ASSOC);
-    }
+        $stmt = self::$instance->prepare('select blog.id, blog.name, blog.text from blog where id= :blog_id');
+        $stmt->execute(array('blog_id' => $id));
+        return $stmt->fetch(PDO::FETCH_LAZY);
+   }
 
     public function updateRow($fields, $id) {
         $fields = $this->prepareFields($fields);
@@ -28,11 +33,12 @@ class Model {
             $sql .= ' '.$key." = '".$field."'," ;
         }
         $sql = substr($sql, 0, -1);
-        $sql = "update blog set $sql where id = $id";
-        return $result = pg_query($sql) or die('Ошибка запроса: ' . pg_last_error());
+        $sql = "update blog set $sql where id = :id";
+        $stmt = self::$instance->prepare($sql);
+        $stmt->execute(array('id' => $id));
     }
 
-    public function addRow($fields) {
+    public function addRow($fields, $tableName) {
         $fields = $this->prepareFields($fields);
         $keys = [];
         $values = [];
@@ -40,8 +46,8 @@ class Model {
             $keys[] = $key;
             $values[] = $field;
         }
-        $sql = 'insert into blog ('.implode(',',$keys).') values (\''.implode("','",$values).'\')';
-        return $result = pg_query($sql) or die('Ошибка запроса: ' . pg_last_error());
+        $sql = 'insert into '.$tableName.' ('.implode(',',$keys).') values (\''.implode("','",$values).'\')';
+        self::$instance->exec($sql);
 
     }
 
@@ -55,8 +61,8 @@ class Model {
 
     public function deleteRow($id) {
         $id = pg_escape_string($id);
-        $sql = 'delete from blog where id='.$id;
-        return $result = pg_query($sql) or die('Ошибка запроса: ' . pg_last_error());
+        $sql = 'delete from blog where id= :id';
+        $stmt = self::$instance->prepare($sql);
+        $stmt->execute(array('id' => $id));
     }
-
 }

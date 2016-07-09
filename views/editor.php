@@ -1,1 +1,1 @@
-	<div class="row">		<?while ($article = pg_fetch_array($articles, null, PGSQL_ASSOC)) {?>			<div class="col-md-8">				<?=$article['name']?>				[<a href="?act=edit&id=<?=$article['id']?>">Изменить</a>|				<a href="?act=del&id=<?=$article['id']?>">Удалить</a>]			</div>		<?}?>	</div>
+<div class="row">	<?foreach ($articles as $article) {?>		<div class="col-md-8">			<?=$article['name']?>			[<a href="?act=edit&id=<?=$article['id']?>">Изменить</a>|			<a href="?act=del&id=<?=$article['id']?>">Удалить</a>]		</div>	<?}?></div>
