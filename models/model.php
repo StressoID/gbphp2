@@ -6,7 +6,7 @@ class Model extends PDO {
 
     public static function getInstance() {
         if (self::$instance == null)
-            self::$instance = new Model("pgsql:host=localhost;dbname=gbphp;", 'postgres', 'postgres');
+            self::$instance = new Model("pgsql:host=localhost;dbname=gbphp;", 'stressoid', 'stressoid');
 
         return self::$instance;
     }
