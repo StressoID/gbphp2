@@ -6,7 +6,7 @@ class Model extends PDO {
 
     public static function getInstance() {
         if (self::$instance == null)
-            self::$instance = new Model("pgsql:host=localhost;dbname=gbphp;", 'stressoid', 'stressoid');
+            self::$instance = new Model("pgsql:host=localhost;dbname=gbphp;", 'postgres', 'postgres');
 
         return self::$instance;
     }
@@ -61,6 +61,9 @@ class Model extends PDO {
 
     public function deleteRow($id) {
         $id = pg_escape_string($id);
+        $sql = 'delete from comments where blog_id = :id';
+        $stmt = self::$instance->prepare($sql);
+        $stmt->execute(array('id' => $id));
         $sql = 'delete from blog where id= :id';
         $stmt = self::$instance->prepare($sql);
         $stmt->execute(array('id' => $id));
