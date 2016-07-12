@@ -6,7 +6,7 @@ class Model extends PDO {
 
     public static function getInstance() {
         if (self::$instance == null)
-            self::$instance = new Model("pgsql:host=localhost;dbname=gbphp;", 'stressoid', 'stressoid');
+            self::$instance = new Model("pgsql:host=localhost;dbname=gbphp;", 'postgres', 'postgres');
 
         return self::$instance;
     }
@@ -26,19 +26,29 @@ class Model extends PDO {
         return $stmt->fetch(PDO::FETCH_LAZY);
    }
 
-    public function updateRow($fields, $id) {
+    public function Select($tableName, $filter = '')
+    {
+        $result = self::$instance->query('SELECT * FROM '.$tableName.(($filter == '') ?: ' where '.$filter), PDO::FETCH_ASSOC)->fetch();
+        return $result;
+    }
+
+    public function justSelect($query)
+    {
+        return self::$instance->query($query, PDO::FETCH_ASSOC)->fetch();
+    }
+
+    public function Update($tableName, $fields, $where) {
         $fields = $this->prepareFields($fields);
         $sql = '';
         foreach ($fields as $key => $field) {
             $sql .= ' '.$key." = '".$field."'," ;
         }
         $sql = substr($sql, 0, -1);
-        $sql = "update blog set $sql where id = :id";
-        $stmt = self::$instance->prepare($sql);
-        $stmt->execute(array('id' => $id));
+        $sql = "update $tableName set $sql where $where";
+        $stmt = self::$instance->query($sql);
     }
 
-    public function addRow($fields, $tableName) {
+    public function Insert($fields, $tableName) {
         $fields = $this->prepareFields($fields);
         $keys = [];
         $values = [];
@@ -59,13 +69,8 @@ class Model extends PDO {
         return $readyFields;
     }
 
-    public function deleteRow($id) {
-        $id = pg_escape_string($id);
-        $sql = 'delete from comments where blog_id = :id';
-        $stmt = self::$instance->prepare($sql);
-        $stmt->execute(array('id' => $id));
-        $sql = 'delete from blog where id= :id';
-        $stmt = self::$instance->prepare($sql);
-        $stmt->execute(array('id' => $id));
+    public function Delete($tableName, $filter) {
+        $sql = 'delete from '.$tableName.' where '.$filter;
+        self::$instance->query($sql);
     }
 }

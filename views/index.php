@@ -1,3 +1,4 @@
+status <?=($online) ? 'online' : '' ?>
 <div class="row">
     <? foreach ($result as $line) {?>
         <div class="col-md-12 rowBlog">

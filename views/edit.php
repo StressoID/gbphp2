@@ -1,4 +1,4 @@
-
+status <?=($online) ? 'online' : '' ?>
 <div class="col-md-12">
     <form action="?act=edit&id=<?=$article['id']?>" id="editArticle" method="POST" class="form-horizontal">
         <div class="form-group">

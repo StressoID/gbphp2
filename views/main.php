@@ -33,6 +33,8 @@
                 <li><a href="/">Главная</a></li>
                 <li><a href="?act=editor">Консоль администратора</a></li>
                 <li><a href="?act=new">Добавить статью</a></li>
+                <li><a href="?act=login">Войти</a></li>
+                <li><a href="?act=reg">Регистрация</a></li>
                 </li>
             </ul>
         </div><!--/.nav-collapse -->
